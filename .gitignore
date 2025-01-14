@@ -1,0 +1,18 @@
+# Ignore compiled Python files
+*.pyc
+
+# Ignore Python cache directories
+__pycache__/
+
+# Ignore virtual environment directories
+venv/
+env/
+.env
+
+# Pythonanywhere files
+pythonanywhere
+pythonanywhere.*
+
+# Config
+
+*.config
