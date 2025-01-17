@@ -1,20 +1,22 @@
 
 from . import db
-class Role(db.Model):
-    __tablename__ = 'roles'
+
+
+class Semester(db.Model):
+    __tablename__ = 'semesters'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    users = db.relationship('User', backref='role', lazy='dynamic')
+    subjects = db.relationship('Subject', backref='semester', lazy='dynamic')
 
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return '<Semester %r>' % self.name
 
 
-class User(db.Model):
-    __tablename__ = 'users'
+class Subject(db.Model):
+    __tablename__ = 'subjects'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, index=True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    name = db.Column(db.String(64), unique=True, index=True)
+    semester_id = db.Column(db.Integer, db.ForeignKey('semesters.id'))
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Subject %r>' % self.name

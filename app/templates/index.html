@@ -1,36 +1,15 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Flasky{% endblock %}
+{% block title %}Avaliação Semestral{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
-    {% if not known %}
-    <p>Pleased to meet you!</p>
-    {% else %}
-    <p>Happy to see you again!</p>
-    {% endif %}
-</div>
-{{ wtf.quick_form(form) }}
+    <h1>Avaliação Semestral</h1>
+    
+    <h3>Aluno: Valentina Corradini Prado</h3>
+    
+    <h3>Prontuário: PT302539X</h3>
 
-<div class="container">
-    <h2>Relação de usuários cadastrados</h2>
-    <table class="table">
-        <tr>
-            <th>Nome do usuário</th>
-            <th>Função</th>
-        </tr>
-        {% for user in users %}
-        <tr>
-            <td>
-                {{user.username}}
-            </td>
-            <td>
-                {{user.role.name }}
-            </td>
-        </tr>
-        {%endfor%}
-    </table>
 </div>
+<p>A data e hora local é {{ moment(now).format('LLL') }} </p>
 {% endblock %}

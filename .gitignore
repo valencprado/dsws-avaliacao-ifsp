@@ -16,3 +16,6 @@ pythonanywhere.*
 # Config
 
 *.config
+
+
+debug.log

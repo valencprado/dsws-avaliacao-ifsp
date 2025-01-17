@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky{% endblock %}
+
+{% block page_content %}
+
+{{ wtf.quick_form(form) }}
+
+<div class="container">
+    <h2>Relação de disciplinas cadastradas</h2>
+    <table class="table">
+        <tr>
+            <th>Disciplina</th>
+            <th>Semestre</th>
+        </tr>
+        {% for subject in subjects %}
+        <tr>
+            <td>
+                {{subject.name}}
+            </td>
+            <td>
+                {{subject.semester.name }}
+            </td>
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+
+{% endblock %}

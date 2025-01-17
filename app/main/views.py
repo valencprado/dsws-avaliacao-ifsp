@@ -2,39 +2,39 @@
 
 from flask import redirect, render_template, url_for, session, current_app
 from .. import db
-from ..models import User, Role
-from ..email import  send_simple_message
-from .forms import NameForm
+from ..models import Subject, Semester
+from .forms import SubjectForm
 from . import main
+from datetime import datetime, UTC
 
+now = datetime.now(UTC)
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    users = User.query.all()
-    form = NameForm()
+    return render_template('index.html', now=now)
+    
+    
+@main.route('/disciplinas', methods=['GET', 'POST'])
+def subjects():
+    subjects = Subject.query.all()
+    form = SubjectForm()
+    form.populate_choices()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            user_role =  Role.query.filter_by(name='User').first()
-            user = User(username=form.name.data, role=user_role)
-            db.session.add(user)
+        subject = Subject.query.filter_by(name=form.subject.data).first()
+        semester = form.semester.data
+        
+        if subject is None:
+            
+            subject = Subject(name=form.subject.data, semester_id=semester)
+            db.session.add(subject)
             db.session.commit()
             session['known'] = False
-            print('Verificando variáveis de ambiente: Server log do PythonAnyWhere', flush=True)
-            print('FLASKY_ADMIN: ' + str(current_app.config['FLASKY_ADMIN']), flush=True)
-            print('URL: ' + str(current_app.config['API_URL']), flush=True)
-            print('api: ' + str(current_app.config['API_KEY']), flush=True)
-            print('from: ' + str(current_app.config['API_FROM']), flush=True)
-            print('to: ' + str([current_app.config['FLASKY_ADMIN'], "flaskaulasweb@zohomail.com"]), flush=True)
-            print('subject: ' + str(current_app.config['FLASKY_MAIL_SUBJECT_PREFIX']), flush=True)
-            print('text: ' + "Novo usuário cadastrado: " + form.name.data, flush=True)
+         
 
-            if current_app.config['FLASKY_ADMIN']:
-                print('Enviando mensagem...', flush=True)
-                send_simple_message([current_app.config['FLASKY_ADMIN'], "flaskaulasweb@zohomail.com"], 'Novo usuário', form.name.data)
-                print('Mensagem enviada...', flush=True)
+           
         else:
             session['known'] = True
-        session['name'] = form.name.data
-        return redirect(url_for('.index'))
-    return render_template('index.html', form=form, name=session.get('name'),
-                           known=session.get('known', False), users=users)
+
+        return redirect(url_for('.subjects'))
+    return render_template('subjects.html', form=form,
+                           known=session.get('known', False), subjects=subjects)
+
