@@ -5,14 +5,15 @@ from .. import db
 from ..models import Subject, Semester
 from .forms import SubjectForm
 from . import main
-from datetime import datetime, UTC
+from datetime import datetime
 
-now = datetime.now(UTC)
+now = datetime.utcnow()
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', now=now)
-    
-    
+
+
 @main.route('/disciplinas', methods=['GET', 'POST'])
 def subjects():
     subjects = Subject.query.all()
@@ -21,16 +22,16 @@ def subjects():
     if form.validate_on_submit():
         subject = Subject.query.filter_by(name=form.subject.data).first()
         semester = form.semester.data
-        
+
         if subject is None:
-            
+
             subject = Subject(name=form.subject.data, semester_id=semester)
             db.session.add(subject)
             db.session.commit()
             session['known'] = False
-         
 
-           
+
+
         else:
             session['known'] = True
 
